@@ -1,0 +1,32 @@
+{
+  "R": {
+    "Version": "4.1.2",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://cran.rstudio.com"
+      }
+    ]
+  },
+  "Packages": {
+    "data.table": {
+      "Package": "data.table",
+      "Version": "1.14.3",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "data.table",
+      "RemoteUsername": "Rdatatable",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "e88826e94127991754a8821ac8149d15f1f9c3c2",
+      "Hash": "668c5a3a2d4d9a726ecd820e1f183437"
+    },
+    "renv": {
+      "Package": "renv",
+      "Version": "0.14.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "30e5eba91b67f7f4d75d31de14bbfbdc"
+    }
+  }
+}
