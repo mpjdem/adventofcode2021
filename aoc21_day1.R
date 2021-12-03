@@ -10,7 +10,7 @@ source("common.R")
 library(data.table)
 
 ## Get the input data
-inp <- as.numeric(readLines("input/input1.txt"))
+inp <- as.numeric(readLines(file.path("input", "input1.txt")))
 
 ## -- PART 1 --
 solution_1 <- sum(diff(inp) > 0)
