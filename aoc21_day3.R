@@ -17,8 +17,8 @@ most_common <- as.integer(colMeans(inp) >= 0.5)
 
 bit_to_int <- function(vec) sum(vec * (2 ^ seq((length(vec) - 1), 0)))
 
-gamma_rate <- sum(bit_to_int(most_common))
-epsilon_rate <- sum(bit_to_int(1L - most_common))
+gamma_rate <- bit_to_int(most_common)
+epsilon_rate <- bit_to_int(1L - most_common)
 
 solution_1 <- gamma_rate * epsilon_rate
 
