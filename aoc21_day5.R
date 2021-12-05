@@ -19,17 +19,17 @@ dt_inp <-
   DT(, id := seq(.N))
 
 ## -- PART 1 --
-solution_1 <- dt_inp |>
-  DT(x1 == x2 | y1 == y2, .(x = x1:x2, y = y1:y2), by = .(id)) |>
-  DT(, .(n = .N), by = .(x, y)) |>
-  DT(n >= 2, .N)
+solution_1 <- dt_inp[
+  x1 == x2 | y1 == y2, .(x = x1:x2, y = y1:y2), by = .(id)][
+  , .(n = .N), by = .(x, y)][
+  n >= 2, .N]
 
 check_solution(5, 1, solution_1)
 
 ## -- PART 2 --
-solution_2 <- dt_inp |>
-  DT(, .(x = x1:x2, y = y1:y2), by = .(id)) |>
-  DT(, .(n = .N), by = .(x, y)) |>
-  DT(n >= 2, .N)
+solution_2 <- dt_inp[
+  , .(x = x1:x2, y = y1:y2), by = .(id)][
+  , .(n = .N), by = .(x, y)][
+  n >= 2, .N]
 
 check_solution(5, 2, solution_2)
