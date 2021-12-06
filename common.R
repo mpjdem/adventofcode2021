@@ -24,8 +24,8 @@ solution_fpath <- function(day, part) {
 #'
 check_solution <- function(day, part, solution) {
   cat(paste0("Solution to Part ", part, ": ", solution, " - "))
-  correct_solution <- as.numeric(readLines(solution_fpath(day, part)))
-  if (solution == correct_solution) cat("correct!\n") else cat("wrong!\n")
+  correct_solution <- readLines(solution_fpath(day, part))
+  if (as.character(solution) == correct_solution) cat("correct!\n") else cat("wrong!\n")
   invisible()
 }
 
@@ -38,7 +38,6 @@ check_solution <- function(day, part, solution) {
 #' @return `NULL`
 #'
 write_solution <- function(day, part, solution) {
-  stopifnot(is.numeric(solution))
   writeLines(as.character(solution), solution_fpath(day, part))
   invisible()
 }
