@@ -8,27 +8,23 @@
 source("common.R")
 
 library(data.table)
-library(gmp)
-
-## {data.table} is more trouble than it's worth here really...
-## Anyway - fun with really large integers and list columns!
 
 fishes <- table(strsplit(readLines("input/input6.txt"), split = ","))
 
 state <- merge(data.table(days_left = 0:8),
                data.table(days_left = as.integer(names(fishes)),
-                          n_fish = as.integer(fishes)),
+                          n_fish = as.numeric(fishes)),
                by = "days_left", all.x = TRUE) |>
-  DT(, n_fish := as.list(as.bigq(fcoalesce(n_fish, 0L))))
+  DT(, n_fish := fcoalesce(n_fish, 0))
 
 for (n_days in 1:256) {
-  n_reproduce <- state$n_fish[[1]]
-  state[, n_fish := c(n_fish[2:.N], list(as.bigq(0L)))]
-  state[days_left %in% c(6L, 8L), n_fish := lapply(n_fish, \(x) x + n_reproduce)]
-  if (n_days == 80) solution_1 <- state[, Reduce(`+`, n_fish, init = 0L)]
+  n_reproduce <- state$n_fish[1]
+  state[, n_fish := shift(n_fish, n = 1, fill = 0, type = "lead")]
+  state[days_left %in% c(6L, 8L), n_fish := n_fish + n_reproduce]
+  if (n_days == 80) solution_1 <- sum(state$n_fish)
 }
 
-solution_2 <- state[, Reduce(`+`, n_fish, init = 0L)]
+solution_2 <- sum(state$n_fish)
 
 check_solution(6, 1, solution_1)
 check_solution(6, 2, solution_2)
