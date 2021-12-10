@@ -34,7 +34,7 @@ m_boards <- array(do.call(cbind, l_boards), c(5, 5, 100))
 dt_winners <- data.table(winner = integer(0), score = integer(0))
 m_state <- FALSE
 
-## Function to commpute score
+## Function to compute score
 for (num in numbers) {
 
   ## Mark matching numbers
