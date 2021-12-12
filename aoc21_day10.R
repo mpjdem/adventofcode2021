@@ -63,6 +63,6 @@ dt_scores <- dt_points_2[dt_incomplete, on = .(type)][
 
 solution_2 <- dt_scores[order(score), score[(.N + 1) / 2]]
 
-
+## -- CHECK --
 check_solution(10, 1, solution_1)
 check_solution(10, 2, solution_2)

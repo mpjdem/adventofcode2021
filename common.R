@@ -41,3 +41,21 @@ write_solution <- function(day, part, solution) {
   writeLines(as.character(solution), solution_fpath(day, part))
   invisible()
 }
+
+#' Read in an undelimited text matrix and transform to data.table of coordinates
+#'
+#' @paam fpath Path to the file
+#'
+#' @return A `data.table` with columns x, y, value
+#'
+file_to_coordinate_table <- function(fpath) {
+  inp <- strsplit(readLines(fpath), split = "")
+
+  dt_inp <-
+    mapply(\(x, ys) data.table(x = x, y = seq_along(ys), value = as.integer(ys)),
+           seq_along(inp), inp,
+           SIMPLIFY = FALSE) |>
+    rbindlist()
+
+  dt_inp
+}
