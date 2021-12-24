@@ -6,12 +6,11 @@
 ## Website: https://www.mpjdem.xyz
 
 source("common.R")
-library(data.table)
 
 ## Read input
 inp <- strsplit(readLines("input/input12.txt"), "-")
 
-## Recode into look-up table of edges
+## Recode into hashed look-up table of edges
 lut <- new.env(hash = TRUE)
 
 for (pair in inp) {
@@ -29,26 +28,26 @@ for (pair in inp) {
 }
 
 ## -- PART 1 --
-paths <- new.env(hash = TRUE)
-paths[["n"]] <- 0L
+## Function to find the next cave
+next_cave <- function(path_taken, valf) {
 
-next_cave <- function(dt_edges, path_taken, valf) {
-
-  ## If this is the end node, save path
   lastv <- tail(path_taken, 1L)
+
   if (lastv == "end") {
-    paths[["n"]] <- paths[["n"]] + 1
-    paths[[as.character(paths[["n"]])]] <<- path_taken
-    if ((paths[["n"]] %% 1000) == 0) print(paths[["n"]])
+
+    ## If this is the end node, save path
+    ## Manually keep count
+    paths$n <- paths$n + 1
+    paths[[as.character(paths$n)]] <<- path_taken
+
   } else {
 
     ## Consider every connected vertex
-    candidates <- lut[[lastv]]
-
     ## If the validation function is TRUE, recurse
-    for (can in candidates) {
+    for (can in lut[[lastv]]) {
       if (valf(path_taken, can)) {
-        next_cave(dt_edges, c(path_taken, can), valf)
+        new_path <- c(path_taken, can)
+        next_cave(new_path, valf)
       }
     }
 
@@ -58,23 +57,26 @@ next_cave <- function(dt_edges, path_taken, valf) {
 
 }
 
-next_cave(dt_inp, "start", function(path_taken, can) {
+paths <- new.env(hash = TRUE)
+paths$n <- 0L
+
+next_cave("start", function(path_taken, can) {
   !grepl("[a-z]+", can) || !(can %in% path_taken)
 })
 
-solution_1 <- length(paths) - 1L
+solution_1 <- paths$n
 
 ## -- PART 2 --
 paths <- new.env(hash = TRUE)
-paths[["n"]] <- 0L
+paths$n <- 0L
 
-next_cave(dt_inp, "start", function(path_taken, can) {
+next_cave("start", function(path_taken, can) {
   !grepl("[a-z]+", can) ||
     !(can %in% path_taken) ||
     !any(duplicated(path_taken[grepl("[a-z]+", path_taken)]))
 })
 
-solution_2 <- length(paths) - 1L
+solution_2 <- paths$n
 
 ## -- CHECK --
 check_solution(12, 1, solution_1)
